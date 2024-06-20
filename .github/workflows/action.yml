@@ -16,14 +16,19 @@ jobs:
 
     steps:
 
+    - name: Harden Runner
+      uses: step-security/harden-runner@17d0e2bd7d51742c71671bd19fa12bdc9d40a3d6 # v2.8.1
+      with:
+        egress-policy: audit
+
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       with:
         ref: ${{ github.event.pull_request.head.sha }}
 
     - name: CredSweeper test
       # TODO: change @action to release point with the action
-      uses: Samsung/CredSweeper@main
+      uses: Samsung/CredSweeper@f9ec85a72a3295ecadb5e5df0e689135a9bb4a0d # main
       with:
         # args - arguments to credsweeper tool. See default values in action.yml
         args: --path ./tests/samples/ --save-json
@@ -40,7 +45,7 @@ jobs:
 
     - name: CredSweeper report
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
       with:
         name: output.json
         path: output.json
